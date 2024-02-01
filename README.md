@@ -9,3 +9,5 @@ The project will try to simulate a store where a client can make purchases and t
 - Value objects: It's something that doesn't change, it is immutable. Instead of using primitive values, you create your own and then it needs to self validate so the value is cohesive
 - Aggregate: It's when you can have a entity related with an value object.
 - Domain services: It's a service stateless and do a specific task.
+- Repositories: It's place where you can store the data, and then you restore them will be the same. Every repository with be related with one Aggregate
+

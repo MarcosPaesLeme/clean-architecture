@@ -18,6 +18,10 @@ export default class Customer {
         return this._id;
     }
 
+    get Address(): Address {
+        return this._address;
+    }
+
     get name(): string {
         return this._name;
     }
@@ -38,6 +42,10 @@ export default class Customer {
     changeName(name: string) {
         this._name = name;
         this.validate();
+    }
+
+    changeAddress(address: Address) {
+        this._address = address;
     }
 
     isActive(): boolean {
