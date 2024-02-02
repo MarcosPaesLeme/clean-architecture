@@ -38,12 +38,13 @@ export default class OrderRepository implements OrderRepositoryInterface {
                 orderModel.id, 
                 orderModel.customer_id, 
                 orderModel.items.map(orderItem => new OrderItem(
-                orderItem.id,
-                orderItem.name,
-                orderItem.price,
-                orderItem.product_id,
-                orderItem.quantity,
-            )));
+                    orderItem.id,
+                    orderItem.name,
+                    orderItem.price,
+                    orderItem.product_id,
+                    orderItem.quantity,
+                ))
+            );
         } catch (e) {
             throw new Error("Order not found");
         }
