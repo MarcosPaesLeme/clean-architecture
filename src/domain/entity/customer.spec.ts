@@ -1,3 +1,6 @@
+import CustomerChangeEventHandler from "../@shared/customer/handler/customer-change-address.handler";
+import FirstCustomerCreateEventHandler from "../@shared/customer/handler/first-customer-create.handler";
+import SecondCustomerCreateEventHandler from "../@shared/customer/handler/second-customer-create.handler";
 import Address from "./address";
 import Customer from "./customer";
 
@@ -30,7 +33,7 @@ describe("Customer unit tests", () => {
     it("should activate customer", () => {
         const customer = new Customer("1", "Customer 1")
         const address = new Address("Street 1",123,"13330-250","São Paulo");
-        customer.Address = address;
+        customer.changeAddress(address);
 
         customer.activate();
 
@@ -63,6 +66,42 @@ describe("Customer unit tests", () => {
 
         customer.addRewardPoints(10);
         expect(customer.rewardPoints).toBe(20);
+    });
+
+    // Testing the events
+    it('should trigger the create event', ()=> {
+        const customer = new Customer("123", "John");
+
+        const firstHandler = new FirstCustomerCreateEventHandler();
+        const secondHandler = new SecondCustomerCreateEventHandler();
+
+        const createEvent = customer.getEventDispatcher.getEventHandlers['CustomerCreatedEvent'];
+
+        expect(createEvent).toBeDefined();
+        expect(createEvent.length).toBe(2);
+        expect(createEvent).toMatchObject([firstHandler, secondHandler]);
+    });
+
+    it('should trigger the create event and the change address event', ()=> {
+        const customer = new Customer("123", "John");
+        const address = new Address("Street 1",123,"13330-250","São Paulo");
+        customer.changeAddress(address);
+        customer.activate();
+
+        const firstHandler = new FirstCustomerCreateEventHandler();
+        const secondHandler = new SecondCustomerCreateEventHandler();
+        const thirdHandler = new CustomerChangeEventHandler();
+
+        const createEvent = customer.getEventDispatcher.getEventHandlers['CustomerCreatedEvent'];
+        const changeAddressEvent = customer.getEventDispatcher.getEventHandlers['CustomerChangeAddressEvent'];
+
+        expect(createEvent).toBeDefined();
+        expect(createEvent.length).toBe(2);
+        expect(createEvent).toMatchObject([firstHandler, secondHandler]);
+
+        expect(changeAddressEvent).toBeDefined();
+        expect(changeAddressEvent.length).toBe(1);
+        expect(changeAddressEvent).toMatchObject(thirdHandler);
     });
 
 });
